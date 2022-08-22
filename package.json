@@ -8,7 +8,7 @@
     "url": "git+https://github.com/hgshdt/rpn-calculator.git"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://npm.pkg.github.com/hgshdt"
   },
   "main": "./dist/rpn-calculator.umd.js",
   "module": "./dist/rpn-calculator.es.js",
