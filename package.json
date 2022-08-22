@@ -1,6 +1,6 @@
 {
   "name": "@hgshdt/rpn-calculator",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "keywords": [],
   "license": "MIT",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "git+https://github.com/hgshdt/rpn-calculator.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/hgshdt"
+    "registry": "https://registry.npmjs.org/"
   },
   "main": "./dist/rpn-calculator.umd.js",
   "module": "./dist/rpn-calculator.es.js",
@@ -26,8 +26,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "prepare": "npm run build",
-    "publish": "npm publish --access=public ./"
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "typescript": "^4.6.4",
