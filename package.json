@@ -1,0 +1,39 @@
+{
+  "name": "@hgshdt/rpn-calculator",
+  "version": "0.0.2",
+  "keywords": [],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hgshdt/rpn-calculator.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "main": "./dist/rpn-calculator.umd.js",
+  "module": "./dist/rpn-calculator.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/rpn-calculator.es.js",
+      "require": "./dist/rpn-calculator.umd.js"
+    }
+  },
+  "types": "./types/main.d.ts",
+  "files": [
+    "/dist",
+    "/types"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "prepare": "npm run build",
+    "publish": "npm publish --access=public ./"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.4",
+    "vite": "^3.0.7"
+  },
+  "dependencies": {
+    "bignumber.js": "^9.1.0"
+  }
+}

@@ -1,0 +1,1 @@
+(function(e,o){typeof exports=="object"&&typeof module<"u"?o(exports):typeof define=="function"&&define.amd?define(["exports"],o):(e=typeof globalThis<"u"?globalThis:e||self,o(e["rpn-calculator"]={}))})(this,function(e){"use strict";const o=()=>console.log("hello, world");e.x=o,Object.defineProperties(e,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}})});
