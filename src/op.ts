@@ -11,3 +11,5 @@ export const times = (a: string, b: string): string =>
 
 export const div = (a: string, b: string): string =>
   BigNumber(a).div(b).toString();
+
+export const abs = (a: string): string => BigNumber(a).negated().toString();
