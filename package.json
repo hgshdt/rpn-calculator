@@ -66,12 +66,9 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
+    "src/**/*.{js,ts}": [
       "prettier --write --loglevel=error",
       "eslint --fix --quiet"
-    ],
-    "{public,src}/**/*.{html,gql,graphql,json}": [
-      "prettier --write --loglevel=error"
     ]
   }
 }

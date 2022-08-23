@@ -1,4 +1,2 @@
 vite.config.js
 .eslintrc.cjs
-*.d.ts
-*.d.ts.map
