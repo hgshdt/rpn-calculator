@@ -1,13 +1,13 @@
 import { abs, div, minus, plus, times } from './op';
 
-type Stack = {
+export type Stack = {
   t: string;
   z: string;
   y: string;
   x: string;
 };
 
-type Input =
+export type Input =
   | 'enter'
   | 'abs'
   | 'swap'
@@ -92,13 +92,14 @@ export const rpnCalc = (input: Input, current: Stack): Stack => {
       result = { x: '0', y: '0', z: '0', t: '0' };
       break;
     default:
-      if (
-        (input === '0' && current.x === '0') ||
-        (input === '.' && current.x.includes('.'))
-      ) {
+      if (input === '.' && current.x.includes('.')) {
         return result;
       }
-      result = { ...current, x: current.x + input };
+      if (current.x === '0') {
+        result = { ...current, x: input };
+      } else {
+        result = { ...current, x: current.x + input };
+      }
       break;
   }
 
