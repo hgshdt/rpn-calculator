@@ -29,10 +29,6 @@ export type Input =
   | '.'
   | '+';
 
-// 4 Level RPN CLASS
-// Usage:
-// const rpn = new RPN({x: '0', y: '0', z: '0', t: '0'});
-// const result = rpn.n('1').n('2').enter().n('3').plus().result(); // 15
 export class RPN {
   private s: Stack;
   private e: boolean;

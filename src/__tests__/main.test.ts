@@ -259,3 +259,108 @@ describe('rpn retain stack t', () => {
     expect(result).toEqual({ x: '11', y: '4', z: '3', t: '3' });
   });
 });
+
+describe('modifiers', () => {
+  const InitialStack: Stack = { x: '0', y: '0', z: '0', t: '0' };
+
+  test('abs', () => {
+    const r = new RPN(InitialStack);
+    const result = r
+      .n('1')
+      .period()
+      .n('2')
+      .enter()
+      .n('3')
+      .abs()
+      .plus()
+      .result(); // 1.2 + (-3) = -1.8
+    expect(result).toEqual({ x: '-1.8', y: '0', z: '0', t: '0' });
+  });
+
+  test('double abs', () => {
+    const r = new RPN(InitialStack);
+    const result = r
+      .n('1')
+      .period()
+      .n('2')
+      .enter()
+      .n('3')
+      .abs()
+      .abs()
+      .plus()
+      .result(); // 1.2 + 3 = 4.2
+    expect(result).toEqual({ x: '4.2', y: '0', z: '0', t: '0' });
+  });
+
+  test('period', () => {
+    const r = new RPN(InitialStack);
+    const result = r
+      .n('1')
+      .period()
+      .n('2')
+      .enter()
+      .n('3')
+      .period()
+      .n('1')
+      .n('4')
+      .plus()
+      .result(); // 1.2 + 3.14 = 4.34
+    expect(result).toEqual({ x: '4.34', y: '0', z: '0', t: '0' });
+  });
+
+  test('duplicate period', () => {
+    const r = new RPN(InitialStack);
+    const result = r
+      .n('1')
+      .period()
+      .n('2')
+      .enter()
+      .n('3')
+      .period()
+      .n('1')
+      .period()
+      .n('4')
+      .period()
+      .plus()
+      .result(); // 1.2 + 3.14 = 4.34
+    expect(result).toEqual({ x: '4.34', y: '0', z: '0', t: '0' });
+  });
+
+  test('abs and period', () => {
+    const r = new RPN(InitialStack);
+    const result = r
+      .n('1')
+      .period()
+      .n('2')
+      .abs()
+      .enter()
+      .n('3')
+      .period()
+      .n('1')
+      .n('4')
+      .abs()
+      .plus()
+      .result(); // -1.2 + (-3.14) = -4.34
+    expect(result).toEqual({ x: '-4.34', y: '0', z: '0', t: '0' });
+  });
+
+  test('period first', () => {
+    const r = new RPN(InitialStack);
+    const result = r.period().n('1').n('2').enter().result();
+    expect(result).toEqual({ x: '0.12', y: '0.12', z: '0', t: '0' });
+  });
+
+  test('abs period', () => {
+    const r = new RPN(InitialStack);
+    const result = r.abs().period().n('1').n('2').enter().result();
+    expect(result).toEqual({ x: '0.12', y: '0.12', z: '0', t: '0' });
+  });
+
+  test('abs period 2', () => {
+    const r = new RPN(InitialStack);
+    const result = r.n('1').abs().period().n('2').result();
+    expect(result).toEqual({ x: '-1.2', y: '0', z: '0', t: '0' });
+  });
+
+  // TODO: swap, bs
+});
