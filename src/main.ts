@@ -29,79 +29,121 @@ export type Input =
   | '.'
   | '+';
 
-export const rpnCalc = (input: Input, current: Stack): Stack => {
-  let result = { ...current };
+// 4 Level RPN CLASS
+// Usage:
+// const rpn = new RPN({x: '0', y: '0', z: '0', t: '0'});
+// const result = rpn.n('1').n('2').enter().n('3').plus().result(); // 15
+export class RPN {
+  private s: Stack;
+  private e: boolean;
+  private o: boolean;
 
-  if (
-    current.x.length < 1 ||
-    current.y.length < 1 ||
-    current.z.length < 1 ||
-    current.t.length < 1
-  )
-    return result;
-
-  switch (input) {
-    case 'enter':
-      result = { x: '0', y: current.x, z: current.y, t: current.z };
-      break;
-    case 'abs':
-      result = { ...current, x: abs(current.x) };
-      break;
-    case 'swap':
-      result = { ...current, x: current.y, y: current.x };
-      break;
-    case 'backspace':
-      result = {
-        ...current,
-        x: current.x.length === 1 ? '0' : current.x.slice(0, -1),
-      };
-      break;
-    case '/':
-      result = {
-        x: div(current.y, current.x),
-        y: current.z,
-        z: current.t,
-        t: '0',
-      };
-      break;
-    case '*':
-      result = {
-        x: times(current.y, current.x),
-        y: current.z,
-        z: current.t,
-        t: '0',
-      };
-      break;
-    case '-':
-      result = {
-        x: minus(current.y, current.x),
-        y: current.z,
-        z: current.t,
-        t: '0',
-      };
-      break;
-    case '+':
-      result = {
-        x: plus(current.y, current.x),
-        y: current.z,
-        z: current.t,
-        t: '0',
-      };
-      break;
-    case 'clear':
-      result = { x: '0', y: '0', z: '0', t: '0' };
-      break;
-    default:
-      if (input === '.' && current.x.includes('.')) {
-        return result;
-      }
-      if (current.x === '0') {
-        result = { ...current, x: input };
-      } else {
-        result = { ...current, x: current.x + input };
-      }
-      break;
+  constructor(s: Stack) {
+    this.s = { ...s };
+    this.e = false;
+    this.o = false;
   }
 
-  return result;
-};
+  result(): Stack {
+    return this.s;
+  }
+
+  enter(): RPN {
+    const cur = { ...this.s };
+    this.s = { x: cur.x, y: cur.x, z: cur.y, t: cur.z };
+    this.e = true;
+
+    return this;
+  }
+
+  abs(): RPN {
+    const cur = { ...this.s };
+    if (cur.x.length < 1) return this;
+    this.s = { ...cur, x: abs(cur.x) };
+
+    return this;
+  }
+
+  swap(): RPN {
+    const cur = { ...this.s };
+    if (cur.x.length < 1 || cur.y.length < 1) return this;
+    this.s = { ...cur, x: cur.y, y: cur.x };
+
+    return this;
+  }
+
+  backspace(): RPN {
+    const cur = { ...this.s };
+    this.s = { ...cur, x: cur.x.length === 1 ? '0' : cur.x.slice(0, -1) };
+
+    return this;
+  }
+
+  div(): RPN {
+    const cur = { ...this.s };
+    if (cur.x.length < 1 || cur.y.length < 1) return this;
+    this.s = { x: div(cur.y, cur.x), y: cur.z, z: cur.t, t: cur.t };
+    this.o = true;
+
+    return this;
+  }
+
+  times(): RPN {
+    const cur = { ...this.s };
+    if (cur.x.length < 1 || cur.y.length < 1) return this;
+    this.s = { x: times(cur.y, cur.x), y: cur.z, z: cur.t, t: cur.t };
+    this.o = true;
+
+    return this;
+  }
+
+  minus(): RPN {
+    const cur = { ...this.s };
+    if (cur.x.length < 1 || cur.y.length < 1) return this;
+    this.s = { x: minus(cur.y, cur.x), y: cur.z, z: cur.t, t: cur.t };
+    this.o = true;
+
+    return this;
+  }
+
+  plus(): RPN {
+    const cur = { ...this.s };
+    if (cur.x.length < 1 || cur.y.length < 1) return this;
+    this.s = { x: plus(cur.y, cur.x), y: cur.z, z: cur.t, t: cur.t };
+    this.o = true;
+
+    return this;
+  }
+
+  clear(): RPN {
+    this.s = { x: '0', y: '0', z: '0', t: '0' };
+
+    return this;
+  }
+
+  period(): RPN {
+    const cur = { ...this.s };
+    if (cur.x.length < 1) return this;
+    if (cur.x.includes('.')) return this;
+    this.s = { ...cur, x: cur.x + '.' };
+
+    return this;
+  }
+
+  n(a: string): RPN {
+    if (a.length < 1) return this;
+    if (this.o) {
+      this.enter();
+      this.o = false;
+    }
+    const cur = { ...this.s };
+    if (cur.x === '0' || this.e) {
+      this.s = { ...cur, x: a };
+      this.e = false;
+    } else {
+      this.s = { ...cur, x: cur.x + a };
+    }
+
+    return this;
+  }
+}
