@@ -88,6 +88,9 @@ export const rpnCalc = (input: Input, current: Stack): Stack => {
         t: '0',
       };
       break;
+    case 'clear':
+      result = { x: '0', y: '0', z: '0', t: '0' };
+      break;
     default:
       if (
         (input === '0' && current.x === '0') ||
