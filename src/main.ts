@@ -40,6 +40,10 @@ export class RPN {
     this.o = false;
   }
 
+  instance(): RPN {
+    return this;
+  }
+
   result(): Stack {
     return this.s;
   }
@@ -48,6 +52,7 @@ export class RPN {
     const cur = { ...this.s };
     this.s = { x: cur.x, y: cur.x, z: cur.y, t: cur.z };
     this.e = true;
+    this.o = false;
 
     return this;
   }
@@ -64,6 +69,8 @@ export class RPN {
     const cur = { ...this.s };
     if (cur.x.length < 1 || cur.y.length < 1) return this;
     this.s = { ...cur, x: cur.y, y: cur.x };
+    this.e = false;
+    this.o = true;
 
     return this;
   }
@@ -71,6 +78,8 @@ export class RPN {
   backspace(): RPN {
     const cur = { ...this.s };
     this.s = { ...cur, x: cur.x.length === 1 ? '0' : cur.x.slice(0, -1) };
+    this.e = false;
+    this.o = false;
 
     return this;
   }
@@ -113,6 +122,8 @@ export class RPN {
 
   clear(): RPN {
     this.s = { x: '0', y: '0', z: '0', t: '0' };
+    this.e = false;
+    this.o = false;
 
     return this;
   }
@@ -121,7 +132,12 @@ export class RPN {
     const cur = { ...this.s };
     if (cur.x.length < 1) return this;
     if (cur.x.includes('.')) return this;
+    if (this.o) {
+      this.enter();
+    }
     this.s = { ...cur, x: cur.x + '.' };
+    this.e = false;
+    this.o = false;
 
     return this;
   }
@@ -130,7 +146,6 @@ export class RPN {
     if (a.length < 1) return this;
     if (this.o) {
       this.enter();
-      this.o = false;
     }
     const cur = { ...this.s };
     if (cur.x === '0' || this.e) {
@@ -139,6 +154,8 @@ export class RPN {
     } else {
       this.s = { ...cur, x: cur.x + a };
     }
+    this.e = false;
+    this.o = false;
 
     return this;
   }

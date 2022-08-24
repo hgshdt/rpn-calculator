@@ -10,6 +10,7 @@ export declare class RPN {
     private e;
     private o;
     constructor(s: Stack);
+    instance(): RPN;
     result(): Stack;
     enter(): RPN;
     abs(): RPN;

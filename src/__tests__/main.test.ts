@@ -1,6 +1,6 @@
 import { RPN, Stack } from '../main';
 
-describe('rpn typical', () => {
+describe('typical case', () => {
   const InitialStack: Stack = { x: '0', y: '0', z: '0', t: '0' };
 
   test('enter', () => {
@@ -362,6 +362,16 @@ describe('modifiers', () => {
     expect(result).toEqual({ x: '-1.2', y: '0', z: '0', t: '0' });
   });
 
+  test('period after enter', () => {
+    const r = new RPN(InitialStack);
+    const result = r.n('1').enter().period().n('2').result();
+    expect(result).toEqual({ x: '1.2', y: '1', z: '0', t: '0' });
+    const result2 = r.plus().backspace().backspace().period().enter().result();
+    expect(result2).toEqual({ x: '2.', y: '2.', z: '0', t: '0' });
+    const result3 = r.plus().result();
+    expect(result3).toEqual({ x: '4', y: '0', z: '0', t: '0' });
+  });
+
   test('swap', () => {
     const r = new RPN(InitialStack);
     const result = r.n('1').enter().n('2').swap().result();
@@ -390,5 +400,20 @@ describe('modifiers', () => {
     const r = new RPN(InitialStack);
     const result = r.n('1').n('2').n('3').enter().clear().result();
     expect(result).toEqual({ x: '0', y: '0', z: '0', t: '0' });
+  });
+});
+
+describe('instance', () => {
+  const InitialStack: Stack = { x: '0', y: '0', z: '0', t: '0' };
+
+  test('instance', () => {
+    const r = new RPN(InitialStack);
+    r.instance().n('1').period().n('2').enter().n('3').abs().plus().result(); // 1.2 + (-3) = -1.8
+    expect(r.instance().result()).toEqual({
+      x: '-1.8',
+      y: '0',
+      z: '0',
+      t: '0',
+    });
   });
 });
