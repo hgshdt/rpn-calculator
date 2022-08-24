@@ -277,7 +277,7 @@ describe('modifiers', () => {
     expect(result).toEqual({ x: '-1.8', y: '0', z: '0', t: '0' });
   });
 
-  test('double abs', () => {
+  test('abs,abs', () => {
     const r = new RPN(InitialStack);
     const result = r
       .n('1')
@@ -362,5 +362,33 @@ describe('modifiers', () => {
     expect(result).toEqual({ x: '-1.2', y: '0', z: '0', t: '0' });
   });
 
-  // TODO: swap, bs
+  test('swap', () => {
+    const r = new RPN(InitialStack);
+    const result = r.n('1').enter().n('2').swap().result();
+    expect(result).toEqual({ x: '1', y: '2', z: '0', t: '0' });
+  });
+
+  test('swap,swap', () => {
+    const r = new RPN(InitialStack);
+    const result = r.n('1').enter().n('2').swap().swap().result();
+    expect(result).toEqual({ x: '2', y: '1', z: '0', t: '0' });
+  });
+
+  test('backspace', () => {
+    const r = new RPN(InitialStack);
+    const result = r.n('1').n('2').n('3').backspace().result();
+    expect(result).toEqual({ x: '12', y: '0', z: '0', t: '0' });
+  });
+
+  test('backspace,backspace', () => {
+    const r = new RPN(InitialStack);
+    const result = r.n('1').n('2').n('3').backspace().backspace().result();
+    expect(result).toEqual({ x: '1', y: '0', z: '0', t: '0' });
+  });
+
+  test('clear', () => {
+    const r = new RPN(InitialStack);
+    const result = r.n('1').n('2').n('3').enter().clear().result();
+    expect(result).toEqual({ x: '0', y: '0', z: '0', t: '0' });
+  });
 });
